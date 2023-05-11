@@ -26,19 +26,19 @@ class TasksController extends Controller
     	$task->description = $request->description;
     	$task->user_id = auth()->user()->id;
     	$task->save();
-    	return redirect('/dashboard'); 
+    	return redirect('/dashboard');
     }
 
     public function edit(Task $task)
     {
 
-    	if (auth()->user()->id == $task->user_id)
-        {            
-                return view('edit', compact('task'));
-        }           
-        else {
-             return redirect('/dashboard');
-         }            	
+//    	if (auth()->user()->id == $task->user_id)
+//        {
+//                return view('edit', compact('task'));
+//        }
+//        else {
+//             return redirect('/dashboard');
+//         }
     }
 
     public function update(Request $request, Task $task)
@@ -54,7 +54,7 @@ class TasksController extends Controller
             ]);
     		$task->description = $request->description;
 	    	$task->save();
-	    	return redirect('/dashboard'); 
-    	}    	
+	    	return redirect('/dashboard');
+    	}
     }
 }
