@@ -31,10 +31,7 @@ class ExportFileEtsy implements FromView,WithTitle,WithColumnWidths
     public function columnWidths(): array
     {
         return [
-            'A'=>5,
-            'B'=>35,
-            'C'=>12,
-            'D'=>30
+            'A'=>45,
         ];
     }
 }

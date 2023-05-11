@@ -26,19 +26,14 @@ class TasksController extends Controller
 
     public function create(Request $request)
     {
-//        $this->validate($request, [
-//            'description' => 'required'
-//        ]);
-//    	$task = new Task();
-//    	$task->description = $request->description;
-//    	$task->user_id = auth()->user()->id;
-//    	$task->save();
         try {
             $url = $request->description;
             $response = Http::get($url);
             $html = $response->body();
 
             $crawler = new Crawler($html);
+
+            $title = $crawler->filter('h1')->text();
             $images = $crawler->filter('.wt-list-unstyled.wt-display-flex-xs.wt-order-xs-1.wt-flex-direction-column-xs.wt-align-items-flex-end')->filter('li')->each(function (Crawler $node)
             {
                 $img = $node->filter('img')->attr('data-src-delay');
@@ -51,11 +46,16 @@ class TasksController extends Controller
                 $image['link_img'] = str_replace('il_75x75', 'il_fullxfull', $image['link_img']);
                 $data [] = $image;
             }
-            return Excel::download(new ExportFileEtsy($data), "imgEtsy.xlsx");
+            $loadData = [
+              'title' => $title,
+              'data' => $data
+            ];
+            return Excel::download(new ExportFileEtsy($loadData), "imgEtsy.xlsx");
         }
         catch (\Exception $e)
         {
             echo 'Không đúng đường link';
+            echo 'error . ' . ':' .$e->getMessage();
             return view('dashboard');
         }
 
