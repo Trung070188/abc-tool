@@ -9,19 +9,19 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
                 <div class="flex">
-                    <div class="flex-auto text-2xl mb-4">Tasks List</div>
+                    <div class="flex-auto text-2xl mb-4">Hello, I is tool</div>
 
                     <div class="flex-auto text-right mt-2">
-                        <a href="/task" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add new Task</a>
+                        <a href="/task" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add link Etsy</a>
                     </div>
                 </div>
                 <table class="w-full text-md rounded mb-4">
                     <thead>
-                    <tr class="border-b">
-                        <th class="text-left p-3 px-5">Task</th>
-                        <th class="text-left p-3 px-5">Actions</th>
-                        <th></th>
-                    </tr>
+{{--                    <tr class="border-b">--}}
+{{--                        <th class="text-left p-3 px-5">Task</th>--}}
+{{--                        <th class="text-left p-3 px-5">Actions</th>--}}
+{{--                        <th></th>--}}
+{{--                    </tr>--}}
                     </thead>
                     <tbody>
                     @foreach(auth()->user()->tasks as $task)
