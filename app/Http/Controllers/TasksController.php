@@ -73,12 +73,13 @@ class TasksController extends Controller
             $shops = $crawler->filter('.wt-pr-xs-0.wt-pl-xs-0.shop-home-wider-items.wt-pb-xs-5')->filter('.listing-link.wt-display-inline-block.wt-transparent-card')->each(function (Crawler $node)
             {
 //                $price = $node->filter('.wt-pr-xs-1.wt-text-title-01')->filter('span')->text();
-                $title = $node->filter('.listing-link.wt-display-inline-block.wt-transparent-card')->text();
+//                $title = $node->filter('.listing-link.wt-display-inline-block.wt-transparent-card')->text();
                 $linkShop = $node->filter('.listing-link.wt-display-inline-block.wt-transparent-card')->attr('href');
                 $url = $linkShop;
                 $response = Http::get($url);
                 $html = $response->body();
                 $crawler = new Crawler($html);
+                $title = $crawler->filter('h1')->text();
                 $images = $crawler->filter('.wt-list-unstyled.wt-display-flex-xs.wt-order-xs-1.wt-flex-direction-column-xs.wt-align-items-flex-end')->filter('li')->each(function (Crawler $node)
                 {
                     $img = $node->filter('img')->attr('data-src-delay');
