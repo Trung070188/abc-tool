@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Export\ExportFileCategoriesEtsy;
 use App\Export\ExportFileEtsy;
 use App\Exports\DevicePlanExport;
 use Illuminate\Http\Request;
@@ -50,16 +51,65 @@ class TasksController extends Controller
               'title' => $title,
               'data' => $data
             ];
+
             return Excel::download(new ExportFileEtsy($loadData), "imgEtsy.xlsx");
         }
         catch (\Exception $e)
         {
-            echo 'Không đúng đường link';
-            echo 'error . ' . ':' .$e->getMessage();
+            echo "\n error . ' . ':'" .$e->getMessage();
             return view('dashboard');
         }
 
     }
+    public function categories(Request $req)
+    {
+        try {
+            $url = $req->categories;
+            $response = Http::get($url);
+            $html = $response->body();
+
+            $crawler = new Crawler($html);
+
+            $shops = $crawler->filter('.wt-pr-xs-0.wt-pl-xs-0.shop-home-wider-items.wt-pb-xs-5')->filter('.listing-link.wt-display-inline-block.wt-transparent-card')->each(function (Crawler $node)
+            {
+//                $price = $node->filter('.wt-pr-xs-1.wt-text-title-01')->filter('span')->text();
+                $title = $node->filter('.listing-link.wt-display-inline-block.wt-transparent-card')->text();
+                $linkShop = $node->filter('.listing-link.wt-display-inline-block.wt-transparent-card')->attr('href');
+                $url = $linkShop;
+                $response = Http::get($url);
+                $html = $response->body();
+                $crawler = new Crawler($html);
+                $images = $crawler->filter('.wt-list-unstyled.wt-display-flex-xs.wt-order-xs-1.wt-flex-direction-column-xs.wt-align-items-flex-end')->filter('li')->each(function (Crawler $node)
+                {
+                    $img = $node->filter('img')->attr('data-src-delay');
+                    return [
+                        'link_img'=> $img
+                    ];
+                });
+                $data = [];
+                foreach ($images as $image) {
+                    $image['link_img'] = str_replace('il_75x75', 'il_fullxfull', $image['link_img']);
+                    $data [] = $image;
+                }
+                return [
+                    'title' => $title,
+                    'img' => $data
+                ];
+
+            });
+            return Excel::download(new ExportFileCategoriesEtsy($shops), "imgEtsy.xlsx");
+        }
+        catch (\Exception $e)
+        {
+            echo "\n error . ' . ':'" .$e->getMessage();
+            return view('dashboard');
+
+        }
+
+
+
+    }
+
 
     public function edit(Task $task)
     {
