@@ -93,6 +93,7 @@ class TasksController extends Controller
                     $data [] = $image;
                 }
                 return [
+                    'link_shop' => $linkShop,
                     'title' => $title,
                     'img' => $data
                 ];

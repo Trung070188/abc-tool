@@ -31,7 +31,8 @@ class ExportFileCategoriesEtsy implements FromView,WithTitle,WithColumnWidths
     public function columnWidths(): array
     {
         return [
-            'A'=>45,
+            'A'=> 50,
+            'B' => 45
         ];
     }
 }
