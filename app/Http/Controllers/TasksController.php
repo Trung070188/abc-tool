@@ -20,9 +20,10 @@ class TasksController extends Controller
 
         return view('dashboard', compact('tasks'));
     }
+
     public function add()
     {
-    	return view('add');
+        return view('add');
     }
 
     public function create(Request $request)
@@ -35,11 +36,10 @@ class TasksController extends Controller
             $crawler = new Crawler($html);
 
             $title = $crawler->filter('h1')->text();
-            $images = $crawler->filter('.wt-list-unstyled.wt-display-flex-xs.wt-order-xs-1.wt-flex-direction-column-xs.wt-align-items-flex-end')->filter('li')->each(function (Crawler $node)
-            {
+            $images = $crawler->filter('.wt-list-unstyled.wt-display-flex-xs.wt-order-xs-1.wt-flex-direction-column-xs.wt-align-items-flex-end')->filter('li')->each(function (Crawler $node) {
                 $img = $node->filter('img')->attr('data-src-delay');
                 return [
-                    'link_img'=> $img
+                    'link_img' => $img
                 ];
             });
             $data = [];
@@ -48,19 +48,18 @@ class TasksController extends Controller
                 $data [] = $image;
             }
             $loadData = [
-              'title' => $title,
-              'data' => $data
+                'title' => $title,
+                'data' => $data
             ];
 
             return Excel::download(new ExportFileEtsy($loadData), "imgEtsy.xlsx");
-        }
-        catch (\Exception $e)
-        {
-            echo "\n error . ' . ':'" .$e->getMessage();
+        } catch (\Exception $e) {
+            echo "\n error . ' . ':'" . $e->getMessage();
             return view('dashboard');
         }
 
     }
+
     public function categories(Request $req)
     {
         try {
@@ -69,22 +68,17 @@ class TasksController extends Controller
             $html = $response->body();
 
             $crawler = new Crawler($html);
-
-            $shops = $crawler->filter('.wt-pr-xs-0.wt-pl-xs-0.shop-home-wider-items.wt-pb-xs-5')->filter('.listing-link.wt-display-inline-block.wt-transparent-card')->each(function (Crawler $node)
-            {
-//                $price = $node->filter('.wt-pr-xs-1.wt-text-title-01')->filter('span')->text();
-//                $title = $node->filter('.listing-link.wt-display-inline-block.wt-transparent-card')->text();
-                $linkShop = $node->filter('.listing-link.wt-display-inline-block.wt-transparent-card')->attr('href');
+            $shops = $crawler->filter('.responsive-listing-grid.wt-grid')->filter('.listing-link.wt-display-inline-block.wt-transparent-card')->each(function (Crawler $node) {
+                $linkShop = $node->attr('href');
                 $url = $linkShop;
                 $response = Http::get($url);
                 $html = $response->body();
                 $crawler = new Crawler($html);
                 $title = $crawler->filter('h1')->text();
-                $images = $crawler->filter('.wt-list-unstyled.wt-display-flex-xs.wt-order-xs-1.wt-flex-direction-column-xs.wt-align-items-flex-end')->filter('li')->each(function (Crawler $node)
-                {
+                $images = $crawler->filter('.wt-list-unstyled.wt-display-flex-xs.wt-order-xs-1.wt-flex-direction-column-xs.wt-align-items-flex-end')->filter('li')->each(function (Crawler $node) {
                     $img = $node->filter('img')->attr('data-src-delay');
                     return [
-                        'link_img'=> $img
+                        'link_img' => $img
                     ];
                 });
                 $data = [];
@@ -97,17 +91,13 @@ class TasksController extends Controller
                     'title' => $title,
                     'img' => $data
                 ];
-
             });
             return Excel::download(new ExportFileCategoriesEtsy($shops), "imgEtsy.xlsx");
-        }
-        catch (\Exception $e)
-        {
-            echo "\n error . ' . ':'" .$e->getMessage();
+        } catch (\Exception $e) {
+            echo "\n error . ' . ':'" . $e->getMessage();
             return view('dashboard');
 
         }
-
 
 
     }
@@ -127,18 +117,16 @@ class TasksController extends Controller
 
     public function update(Request $request, Task $task)
     {
-    	if(isset($_POST['delete'])) {
-    		$task->delete();
-    		return redirect('/dashboard');
-    	}
-    	else
-    	{
+        if (isset($_POST['delete'])) {
+            $task->delete();
+            return redirect('/dashboard');
+        } else {
             $this->validate($request, [
                 'description' => 'required'
             ]);
-    		$task->description = $request->description;
-	    	$task->save();
-	    	return redirect('/dashboard');
-    	}
+            $task->description = $request->description;
+            $task->save();
+            return redirect('/dashboard');
+        }
     }
 }
