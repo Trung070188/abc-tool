@@ -26,13 +26,24 @@ class ExportFileCategoriesEtsy implements FromView,WithTitle,WithColumnWidths
 
     public function title(): string
     {
-        return 'Device';
+        return 'Etsy';
     }
     public function columnWidths(): array
     {
         return [
             'A'=> 50,
-            'B' => 45
+            'B' => 50,
+            'C' => 30,
+            'D' => 30,
+            'E' => 30,
+            'F' => 30,
+            'G' => 30,
+            'I' => 30,
+            'J' => 30,
+            'K' => 30,
+            'L' => 30,
+            'M' => 30,
+            'N' => 30
         ];
     }
 }
