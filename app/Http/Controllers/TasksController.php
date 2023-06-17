@@ -117,7 +117,7 @@ class TasksController extends Controller
                     else {
                         $images = $crawler->filter('.wt-list-unstyled.wt-display-flex-xs.wt-order-xs-1.wt-flex-direction-column-xs.wt-align-items-flex-end')->filter('li')->slice(0, -1)->each(function (Crawler $node) {
 
-                            if($node->attr('data-image-id') !== 'listing-video-1' || $node->attr('data-image-id') !== '' )
+                            if($node->attr('data-image-id') !== 'listing-video-1')
                             {
                                 $img = $node->filter('img')->attr('data-src-delay');
                                 return [
