@@ -55,7 +55,7 @@ class TasksController extends Controller
             }
             else {
 
-                $images = $crawler->filter('.wt-list-unstyled.wt-display-flex-xs.wt-order-xs-1.wt-flex-direction-column-xs.wt-align-items-flex-end')->filter('li')->each(function (Crawler $node) {
+                $images = $crawler->filter('.wt-list-unstyled.wt-display-flex-xs.wt-order-xs-1.wt-flex-direction-column-xs.wt-align-items-flex-end')->filter('li')->slice(0,-1)->each(function (Crawler $node) {
 
                 // fix lấy ảnh k lấy video
 
@@ -115,9 +115,9 @@ class TasksController extends Controller
                         ];
                     }
                     else {
-                        $images = $crawler->filter('.wt-list-unstyled.wt-display-flex-xs.wt-order-xs-1.wt-flex-direction-column-xs.wt-align-items-flex-end')->filter('li')->each(function (Crawler $node) {
+                        $images = $crawler->filter('.wt-list-unstyled.wt-display-flex-xs.wt-order-xs-1.wt-flex-direction-column-xs.wt-align-items-flex-end')->filter('li')->slice(0, -1)->each(function (Crawler $node) {
 
-                            if($node->attr('data-image-id') !== 'listing-video-1')
+                            if($node->attr('data-image-id') !== 'listing-video-1' || $node->attr('data-image-id') !== '' )
                             {
                                 $img = $node->filter('img')->attr('data-src-delay');
                                 return [
